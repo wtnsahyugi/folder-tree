@@ -7,21 +7,23 @@
             :node="item"
             :depth=0
             @load-children="loadChildren"
+            @update:selected-folder="updateSelectedFolder"
         />
         </ul>
     </div>
 </template>
 
-<script>
+<script setup>
     import { ref, onMounted } from 'vue';
     import TreeNode from './TreeNode.vue';
 
-    export default {
-        name: 'FolderTree',
-        components: { TreeNode },
-        setup(props, { emit }) {
+    // export default {
+    //     name: 'FolderTree',
+    //     components: { TreeNode },
+    //     setup(props, { emit }) {
             const treeData = ref([]);
             const selectedFolder = ref(null);
+            const emit = defineEmits();
 
             // Fetch root-level folders (parent_id = 0)
             const fetchRootFolders = async () => {
@@ -47,18 +49,30 @@
                 }
             };
 
+            const updateSelectedFolder = (v) => {
+                emit('update:selected-folder', v)
+            };
+
             onMounted(() => {
                 fetchRootFolders();
             });
 
-            return { treeData, loadChildren };
-        },
-    };
+    //         return { treeData, loadChildren, updateSelectedFolder };
+    //     },
+    // };
 </script>
 
 <style>
   .folder-tree ul {
     list-style: none;
     padding-left: 20px;
+
+  }
+
+  .folder-tree {
+    text-align: start;
+    width: 400px;
+    border-right: 1px solid #ccc;
+    height: 100vh;
   }
 </style>

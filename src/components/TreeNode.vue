@@ -21,42 +21,41 @@
   </li>
 </template>
 
-<script>
+<script setup>
   import { ref } from 'vue';
 
-  export default {
-    name: 'TreeNode',
-    props: {
-      node: {
-        type: Object,
-        required: true,
-      },
-      depth: {
-        type: Number,
-        default: 0,
-      },
+  const props = defineProps({
+    node: {
+      type: Object,
+      required: true,
     },
-    setup(props, { emit }) {
-        const isOpen = ref(false);
-        const selectedFolder = ref(null);
-
-        const toggle = () => {
-            if (!isOpen.value && !props.node.child && props.node.is_folder) {
-                // Load children only when opening a folder for the first time
-                emit("load-children", props.node.id, props.node);
-            }
-            selectedFolder.value = props.node.child;
-            emit('update:selected-folder', selectedFolder)
-            isOpen.value = !isOpen.value;
-        };
-
-
-        const handleChildLoad = (childId, childNode) => {
-            emit("load-children", childId, childNode); // Propagate child load events upward
-        };
-
-      return { isOpen, toggle, handleChildLoad, is_folder: props.node.is_folder };
+    depth: {
+      type: Number,
+      default: 0,
     },
+  });
+
+  const is_folder = props.node.is_folder;
+  const emit = defineEmits();
+
+  const isOpen = ref(false);
+  const selectedFolder = ref(null);
+
+  const toggle = () => {
+      if (!isOpen.value && !props.node.child && props.node.is_folder) {
+          // Load children only when opening a folder for the first time
+          emit("load-children", props.node.id, props.node);
+      }
+
+      selectedFolder.value = props.node;
+      emit('update:selected-folder', selectedFolder)
+
+      isOpen.value = !isOpen.value;
+  };
+
+
+  const handleChildLoad = (childId, childNode) => {
+      emit("load-children", childId, childNode);
   };
 </script>
 
@@ -80,16 +79,16 @@
 
   /* Folder icons */
   .folder-icon .icon-folder-open {
-    content: url('./assets/folder_open.png'); /* Replace with actual folder open icon */
+    content: url('../assets/folder_open.png'); /* Replace with actual folder open icon */
   }
 
   .folder-icon .icon-folder-closed {
-    content: url('./assets/folder_close.png'); /* Replace with actual folder closed icon */
+    content: url('../assets/folder_close.png'); /* Replace with actual folder closed icon */
   }
 
   /* File icon */
   .file-icon .icon-file {
-    content: url('./assets/document.png'); /* Replace with actual file icon */
+    content: url('../assets/document.png'); /* Replace with actual file icon */
   }
 
   /* Child padding dynamically handled via inline style */
