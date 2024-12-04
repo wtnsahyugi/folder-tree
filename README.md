@@ -1,5 +1,7 @@
 # Folder Tree Application
 
+![](./src/assets/screenshot.png)
+
 This is a simple application that displays a folder structure using a tree view with vue as frontend and golang as backend. Users can click on folders to expand them and view their contents (including files and subfolders).
 
 ## Table of Contents
@@ -17,6 +19,7 @@ This is a simple application that displays a folder structure using a tree view 
 1. Node.js installed on your system.
 2. npm (Node Package Manager) installed on your system.
 3. golang and postgreSQL installed on your system.
+4. database migration cli `migrate` https://github.com/golang-migrate/migrate
 4. A text editor or IDE of your choice.
 
 ## Installation
@@ -27,9 +30,22 @@ This is a simple application that displays a folder structure using a tree view 
    cd my-vue-app
    ```
 
-2. Install the required dependencies:
+2. Download dependencies for the backend:
+    ```bash
+    cd src/backend/folder-tree && go mod vendor
+    ```
+
+3. Migrate the database:
    ```bash
-   npm install
+   migrate -path db/migrations -database postgres://user:password@localhost:5432/folder_tree_db migrate up
+   ```
+4. Run the backend server, and it will start running on 8081:
+    ```bash
+    go run cmd/main.go
+    ```
+5. Install the required front end dependencies:
+   ```bash
+   cd ../../.. && npm install
    ```
 
 3. Run the development server:
