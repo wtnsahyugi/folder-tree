@@ -13,7 +13,6 @@ This is a simple application that displays a folder structure using a tree view 
   - [FolderTree](#foldertree)
   - [FolderContent](#foldercontent)
 - [API Endpoints](#api-endpoints)
-- [Styling](#styling)
 
 ## Prerequisite
 1. Node.js installed on your system.
