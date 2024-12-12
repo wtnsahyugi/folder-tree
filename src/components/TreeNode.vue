@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { ref, inject, watch } from 'vue';
 
   const props = defineProps({
     node: {
@@ -35,6 +35,8 @@
     },
   });
 
+  const folderParent = inject('openFolder')
+
   const is_folder = props.node.is_folder;
   const emit = defineEmits();
 
@@ -42,7 +44,8 @@
   const selectedFolder = ref(null);
 
   const toggle = () => {
-      if (!isOpen.value && !props.node.child && props.node.is_folder) {
+      console.log(props.node.id, props.node)
+      if (!isOpen.value && props.node.is_folder) {
           // Load children only when opening a folder for the first time
           emit("load-children", props.node.id, props.node);
       }
@@ -57,6 +60,13 @@
   const handleChildLoad = (childId, childNode) => {
       emit("load-children", childId, childNode);
   };
+
+  watch(folderParent, (newFolder) => {
+      if (newFolder && newFolder.value.id === props.node.id) {
+          isOpen.value = true;
+      }
+  },
+  { deep: true });
 </script>
 
 <style>

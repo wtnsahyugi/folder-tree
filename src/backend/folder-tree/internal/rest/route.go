@@ -17,6 +17,6 @@ func registerRoute(router *gin.Engine, db *pgxpool.Pool) {
 
 	routes := router.Group("/", middleware.CORSMiddleware())
 	{
-		routes.GET("folder/tree", h.GetFolderChild)
+		routes.GET("folder-trees", h.GetFolderChild)
 	}
 }

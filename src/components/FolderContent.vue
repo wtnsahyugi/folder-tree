@@ -29,14 +29,15 @@
   });
 
   const folderContent = ref(null);
-  const $emit = defineEmits(['update:selected-folder']);
+  const emit = defineEmits();
   const loadChildren = async (parentId, parentNode) => {
       try {
-          const response = await fetch(`http://localhost:8081/folder/tree?id=${parentId}&depth=2`);
+          const response = await fetch(`http://localhost:8081/folder-trees?id=${parentId}&depth=2`);
           const respData = await response.json();
           parentNode.child = respData.data.child; // Populate the child nodes
           folderContent.value = parentNode;
-          $emit('update:selected-folder', folderContent)
+          folderContent.contentid = 'content-'+parentId
+          emit('update:selected-folder-content', folderContent, 'content-'+parentId)
       } catch (error) {
           console.error(`Failed to load children for parent ID ${parentId}:`, error);
       }
